@@ -36,6 +36,11 @@ public class LogFileParser {
         this.linePattern = Pattern.compile(pattern);
     }
 
+    /** Convenience constructor using the default pattern (handy for unit tests). */
+    public LogFileParser() {
+        this(DEFAULT_PATTERN);
+    }
+
     /**
      * Attempts to parse a single raw log line.
      *
