@@ -52,6 +52,10 @@ public class RulesConfigLoader {
             log.info("Loaded {} rule definition(s) from {}", ruleDefinitions.size(), path);
         } catch (IOException e) {
             log.error("Failed to read rules config file at {}", path, e);
+        } catch (Exception e) {
+            // Covers YAMLException and other parsing errors from malformed config content.
+            log.error("Failed to parse rules config file at {}. No rules will be evaluated.", path, e);
+            this.ruleDefinitions = Collections.emptyList();
         }
     }
 
