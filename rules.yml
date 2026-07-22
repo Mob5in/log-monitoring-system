@@ -1,0 +1,15 @@
+rules:
+  - name: error-log-rule
+    type: LOG_TYPE
+    logLevel: ERROR
+
+  - name: warning-rate-rule
+    type: TYPE_RATE
+    logLevel: WARNING
+    windowSeconds: 300
+    threshold: 10
+
+  - name: overall-rate-rule
+    type: OVERALL_RATE
+    windowSeconds: 300
+    threshold: 50
