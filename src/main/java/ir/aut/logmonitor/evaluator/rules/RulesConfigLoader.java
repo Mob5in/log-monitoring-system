@@ -4,10 +4,11 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.LoaderOptions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,7 @@ import java.util.List;
  * read once at startup and kept in memory for the RuleEngine to use.
  */
 @Component
+@Profile({"evaluator", "default"})
 public class RulesConfigLoader {
 
     private static final Logger log = LoggerFactory.getLogger(RulesConfigLoader.class);

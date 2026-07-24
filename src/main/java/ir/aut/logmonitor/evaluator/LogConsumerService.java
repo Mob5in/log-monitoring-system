@@ -3,6 +3,7 @@ package ir.aut.logmonitor.evaluator;
 import ir.aut.logmonitor.common.model.LogEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  * evaluation.
  */
 @Service
+@Profile({"evaluator", "default"})
 public class LogConsumerService {
 
     private static final Logger log = LoggerFactory.getLogger(LogConsumerService.class);

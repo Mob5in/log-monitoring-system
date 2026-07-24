@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import java.util.stream.Stream;
  * {@link WatchService} API.
  */
 @Service
+@Profile({"ingester", "default"})
 public class FileWatcherService {
 
     private static final Logger log = LoggerFactory.getLogger(FileWatcherService.class);
@@ -115,7 +117,6 @@ public class FileWatcherService {
             waitUntilStable(file);
 
             String componentName = extractComponentName(file);
-//          اینجا برای فایل های بزرگ میشه از استریمینگ استفاده کرد که توی اپدیت های بعدی میتونم پیاده سازیش کنم.
             List<String> lines = Files.readAllLines(file);
 
             for (String line : lines) {
@@ -155,10 +156,6 @@ public class FileWatcherService {
                 file.getFileName(), MAX_STABILITY_CHECKS);
     }
 
-
-//    خطای ارسال به کافکا داریم
-//    اگر ارسال به Kafka خطای unchecked بده،  ممکنه watcher thread بمیره
-//    اینم باید مدیریت بشه
     private void sendToKafka(LogEntry entry) {
         try {
             // .get() blocks until Kafka confirms the send, so we only delete
@@ -188,11 +185,3 @@ public class FileWatcherService {
                 : withoutExtension;
     }
 }
-
-// اگه برنامه بعد از ارسال ولی قبل از پاک کردن فایل crash کنن، ممکنه لاگ‌ها دوباره فرستاده بشن
-
-
-
-// برای scale کردن، اول داده را shard یا claim کن، بعد workerها را زیاد کن. بدون coordination، چند watcher روی یک
-//پوشه باعث duplicate و race condition می‌شوند. برای حجم بالا هم بهتر است ingestion را به ابزارهایی مثل Filebeat یا
-// Fluent Bit بسپاری.

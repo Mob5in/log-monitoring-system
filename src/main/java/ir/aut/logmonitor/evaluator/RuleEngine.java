@@ -6,6 +6,7 @@ import ir.aut.logmonitor.common.model.LogEntry;
 import ir.aut.logmonitor.evaluator.rules.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
  * {@link AlertRepository}.
  */
 @Component
+@Profile({"evaluator", "default"})
 public class RuleEngine {
 
     private static final Logger log = LoggerFactory.getLogger(RuleEngine.class);
