@@ -74,10 +74,11 @@ public class FileWatcherService {
     }
 
     private void startWatchingInBackground() {
-        // Runs on its own daemon thread so it doesn't block app startup
-        // and doesn't prevent the JVM from shutting down.
+        // NOT a daemon thread on purpose: when this app runs in the "ingester"
+        // profile (no embedded web server), this thread is the only thing
+        // keeping the JVM alive. A daemon thread would let the JVM exit
+        // immediately after startup since nothing else would be running.
         Thread watcherThread = new Thread(this::watchLoop, "log-file-watcher");
-        watcherThread.setDaemon(true);
         watcherThread.start();
     }
 
